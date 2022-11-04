@@ -7,6 +7,7 @@
  ***************************************************************/
  
 #include "ICM_20948.h"
+#include "ubidotsSetup.h"
 
 #define SERIAL_PORT Serial
 #define WIRE_PORT Wire // Your desired Wire port.      Used when "USE_SPI" is not defined
