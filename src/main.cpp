@@ -20,8 +20,10 @@ int stepC{0};
 
 void setup()
 {
-  SERIAL_PORT.begin(115200);
-  while (!SERIAL_PORT);
+  // SERIAL_PORT.begin(115200);
+  
+  ubidotsSetup::init(ubidots, callback , WIFI_SSID, WIFI_PASS);
+  ubidotsSetup::sub(ubidots, DEVICE_LABEL,SUB_VARIABLE_LABEL, SUB_VARIABLE_LABEL_LENGTH);
 
   WIRE_PORT.begin();
   WIRE_PORT.setClock(400000);
@@ -53,7 +55,7 @@ void loop()
   {
     myICM.getAGMT();  // The values are only updated when you call 'getAGMT'
     delay(30);
-    delay(170); // lagt til av Iver
+    delay(170);
 
     Serial.println(pythagorasAcc(&myICM));
     numberOfSteps(stepC);
@@ -64,13 +66,30 @@ void loop()
     SERIAL_PORT.println("Waiting for data");
     delay(500);
   }
+  ubidotsSetup::checkConnection(ubidots, DEVICE_LABEL,SUB_VARIABLE_LABEL, SUB_VARIABLE_LABEL_LENGTH);
 }
 
 
 float pythagorasAcc(ICM_20948_I2C *sensor) {
-  return sqrt(pow(sensor->accX(), 2) + pow(sensor->accY(), 2) + pow(sensor->accZ(), 2)); // Kan vurdere å fjerne sqrt.
+  return sqrt(pow(sensor->accX(), 2) + pow(sensor->accY(), 2) + pow(sensor->accZ(), 2));
 }
 
 void numberOfSteps(int &stepCounter){
   if(pythagorasAcc(&myICM) > 1200) stepCounter++;
+}
+
+
+
+
+
+void callback(char *topic, byte *payload, unsigned int length)
+{
+  Serial.print("Message arrived [");
+  Serial.print(topic);
+  Serial.print("] ");
+  for (int i = 0; i < length; i++)
+  {
+    Serial.print((char)payload[i]);
+  }
+  Serial.println();
 }

@@ -11,6 +11,7 @@ void init(Ubidots & ubidots, void(*callback) (char*, byte*, unsigned int), const
 {
   // put your setup code here, to run once:
   Serial.begin(115200);
+  while (!Serial);
   // ubidots.setDebug(true);  // uncomment this to make debug messages available
   ubidots.connectToWifi(ssid, pass);
   ubidots.setCallback(callback);
