@@ -53,7 +53,7 @@ void loop()
   {
     myICM.getAGMT();  // The values are only updated when you call 'getAGMT'
     delay(30);
-    delay(170);
+    delay(170); // lagt til av Iver
 
     Serial.println(pythagorasAcc(&myICM));
     numberOfSteps(stepC);
@@ -68,7 +68,7 @@ void loop()
 
 
 float pythagorasAcc(ICM_20948_I2C *sensor) {
-  return sqrt(pow(sensor->accX(), 2) + pow(sensor->accY(), 2) + pow(sensor->accZ(), 2));
+  return sqrt(pow(sensor->accX(), 2) + pow(sensor->accY(), 2) + pow(sensor->accZ(), 2)); // Kan vurdere å fjerne sqrt.
 }
 
 void numberOfSteps(int &stepCounter){
