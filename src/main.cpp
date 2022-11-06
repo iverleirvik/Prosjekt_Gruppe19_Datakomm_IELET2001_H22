@@ -8,6 +8,10 @@
  
 #include "ICM_20948.h"
 #include "ubidotsSetup.h"
+#include "UbidotsEsp32Mqtt.h"
+#include "secrets.h"
+#include "ubidotsSetup.h"
+Ubidots ubidots(UBIDOTS_TOKEN);
 
 #define SERIAL_PORT Serial
 #define WIRE_PORT Wire // Your desired Wire port.      Used when "USE_SPI" is not defined
@@ -18,6 +22,7 @@ ICM_20948_I2C myICM; // Otherwise create an ICM_20948_I2C object
 float pythagorasAcc(ICM_20948_I2C *sensor);
 void numberOfSteps(int &stepCounter);
 int stepC{0};
+void callback(char *topic, byte *payload, unsigned int length);
 
 void setup()
 {
