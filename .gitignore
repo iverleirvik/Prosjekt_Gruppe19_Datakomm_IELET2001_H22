@@ -5,4 +5,4 @@ include/README
 .ccls
 .vscode
 workspace.code-workspace
-secrets.h
+/lib/ESP32_kode_sritteller_bibliotek/secrets.h
