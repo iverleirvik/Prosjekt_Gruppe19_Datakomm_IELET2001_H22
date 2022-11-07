@@ -5,3 +5,4 @@ include/README
 .ccls
 .vscode
 workspace.code-workspace
+secrets.h

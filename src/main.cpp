@@ -10,6 +10,7 @@
 #include "ubidotsSetup.h"
 #include "UbidotsEsp32Mqtt.h"
 #include "secrets.h"
+#include "UbidotsConfig.h"
 #include "ubidotsSetup.h"
 Ubidots ubidots(UBIDOTS_TOKEN);
 
