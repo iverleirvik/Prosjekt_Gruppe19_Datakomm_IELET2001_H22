@@ -5,37 +5,46 @@
    Please see License.md for the license information.
    Distributed as-is; no warranty is given.
  ***************************************************************/
- 
+
 #include "ICM_20948.h"
 #include "ubidotsSetup.h"
 #include "UbidotsEsp32Mqtt.h"
 #include "secrets.h"
 #include "UbidotsConfig.h"
 #include "ubidotsSetup.h"
-Ubidots ubidots(UBIDOTS_TOKEN);
+#include "stepManager.h"
+
+#ifdef NOSENSOR
+#include "dummyGetSensorData.h"
+#endif
 
 #define SERIAL_PORT Serial
 #define WIRE_PORT Wire // Your desired Wire port.      Used when "USE_SPI" is not defined
 #define AD0_VAL 1      // The value of the last bit of the I2C address. On the SparkFun 9DoF IMU breakout the default is 1, and when the ADR jumper is closed the value becomes 0.
 
 ICM_20948_I2C myICM; // Otherwise create an ICM_20948_I2C object
+Ubidots ubidots(UBIDOTS_TOKEN);
+stepManager pedometer;
 
 float pythagorasAcc(ICM_20948_I2C *sensor);
 void numberOfSteps(int &stepCounter);
 int stepC{0};
 void callback(char *topic, byte *payload, unsigned int length);
 
+unsigned long timer=0;
+
+
 void setup()
 {
   // SERIAL_PORT.begin(115200);
-  
-  ubidotsSetup::init(ubidots, callback , WIFI_SSID, WIFI_PASS);
-  ubidotsSetup::sub(ubidots, DEVICE_LABEL,SUB_VARIABLE_LABEL, SUB_VARIABLE_LABEL_LENGTH);
 
+  ubidotsSetup::init(ubidots, callback, WIFI_SSID, WIFI_PASS);
+  ubidotsSetup::sub(ubidots, DEVICE_LABEL, SUB_VARIABLE_LABEL, SUB_VARIABLE_LABEL_LENGTH);
+#ifndef NOSENSOR
   WIRE_PORT.begin();
   WIRE_PORT.setClock(400000);
 
-  //myICM.enableDebugging(); // Uncomment this line to enable helpful debug messages on Serial
+  // myICM.enableDebugging(); // Uncomment this line to enable helpful debug messages on Serial
 
   bool initialized = false;
   while (!initialized)
@@ -54,40 +63,56 @@ void setup()
       initialized = true;
     }
   }
+#endif
 }
 
 void loop()
 {
+  int step=0;
+  ubidotsSetup::checkConnection(ubidots, DEVICE_LABEL, SUB_VARIABLE_LABEL, SUB_VARIABLE_LABEL_LENGTH);
+#ifndef NOSENSOR
   if (myICM.dataReady())
   {
-    myICM.getAGMT();  // The values are only updated when you call 'getAGMT'
+    myICM.getAGMT(); // The values are only updated when you call 'getAGMT'
     delay(30);
     delay(170);
 
     Serial.println(pythagorasAcc(&myICM));
     numberOfSteps(stepC);
-    Serial.println(stepC); 
+    Serial.println(stepC);
   }
   else
   {
     SERIAL_PORT.println("Waiting for data");
     delay(500);
   }
-  ubidotsSetup::checkConnection(ubidots, DEVICE_LABEL,SUB_VARIABLE_LABEL, SUB_VARIABLE_LABEL_LENGTH);
+#else
+
+  step=dummy::getStep();
+
+#endif
+  if (step == 1){
+    pedometer.registerStep();
+  }
+  if ((pedometer.getCurrentCycleSteps() != 0) && ((millis() - timer) > PUBLISH_FREQUENCY)){
+    ubidots.add(VARIABLE_LABEL, pedometer.getCurrentCycleSteps());
+    ubidots.add("start", pedometer.getCurrentDaySteps());
+    ubidots.publish(DEVICE_LABEL);
+    timer = millis();
+    pedometer.resetStepCycle();
+  }
 }
 
-
-float pythagorasAcc(ICM_20948_I2C *sensor) {
+float pythagorasAcc(ICM_20948_I2C *sensor)
+{
   return sqrt(pow(sensor->accX(), 2) + pow(sensor->accY(), 2) + pow(sensor->accZ(), 2));
 }
 
-void numberOfSteps(int &stepCounter){
-  if(pythagorasAcc(&myICM) > 1200) stepCounter++;
+void numberOfSteps(int &stepCounter)
+{
+  if (pythagorasAcc(&myICM) > 1200)
+    stepCounter++;
 }
-
-
-
-
 
 void callback(char *topic, byte *payload, unsigned int length)
 {
