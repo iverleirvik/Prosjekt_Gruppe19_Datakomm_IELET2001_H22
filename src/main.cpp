@@ -25,15 +25,16 @@
 
 ICM_20948_I2C myICM; // Otherwise create an ICM_20948_I2C object
 UbidotsUnsub ubidots(UBIDOTS_TOKEN);
-stepManager pedometer( ubidots,DEVICE_LABEL,"steps" , "stepsToday", "daySent" );
+stepManager pedometer(ubidots, DEVICE_LABEL, "steps", "stepsToday", "daySent");
 
 float pythagorasAcc(ICM_20948_I2C *sensor);
 void numberOfSteps(int &stepCounter);
 int stepC{0};
 void callback(char *topic, byte *payload, unsigned int length);
 
-unsigned long timer=0;
-
+unsigned long timer = 0;
+int oldStep = -1;
+int oldDay = 0;
 
 void setup()
 {
@@ -69,7 +70,7 @@ void setup()
 
 void loop()
 {
-  int step=0;
+  int step = 0;
   ubidotsSetup::checkConnection(ubidots, DEVICE_LABEL, SUB_VARIABLE_LABEL, SUB_VARIABLE_LABEL_LENGTH);
 #ifndef NOSENSOR
   if (myICM.dataReady())
@@ -89,18 +90,20 @@ void loop()
   }
 #else
 
-  step=dummy::getStep();
+  step = dummy::getStep();
 
 #endif
-  if (step == 1){         //register step. variable can only be active for one cycle
+  if (step == 1)
+  { // register step. variable can only be active for one cycle
     pedometer.registerStep();
   }
   // send total steps and cycle steps to Ubidots at timeinterval and on change in data.
-  if ((pedometer.getCurrentCycleSteps() != 0) && ((millis() - timer) > PUBLISH_FREQUENCY)){
+  if ((pedometer.getCurrentCycleSteps() != 0) && ((millis() - timer) > PUBLISH_FREQUENCY))
+  {
     pedometer.ubiPublisStep();
     timer = millis();
   }
-} 
+}
 
 float pythagorasAcc(ICM_20948_I2C *sensor)
 {
@@ -115,30 +118,37 @@ void numberOfSteps(int &stepCounter)
 
 void callback(char *topic, byte *payload, unsigned int length)
 {
-   int payloadInt;
+  int payloadInt;
   char paloadChar[20];
   Serial.print("Message arrived [");
   Serial.print(topic);
   Serial.print("] ");
   for (int i = 0; i < length; i++)
   {
-    paloadChar[i]=((char)payload[i]);
+    paloadChar[i] = ((char)payload[i]);
   }
-  Serial.println(atoi(paloadChar));
+  payloadInt = atoi(paloadChar);
+  Serial.println(payloadInt);
 
-  if (strstr("step", topic)){
-
-  }else if (strstr("daySent", topic))
+  if (strstr("daySent", topic))
   {
-    /* code */
-  }else if (strstr("stepsToday", topic))
+    if (payloadInt == pedometer.getDateInYear())
+    {
+      if (oldStep != -1)
+        pedometer.addDayStep(oldStep);
+      oldDay = 1;
+    }
+    ubidots.unSubscribeLastValue(DEVICE_LABEL, "daySent");
+  }
+  else if (strstr("stepsToday", topic))
   {
-    /* code */
-  }else{
+    oldStep = payloadInt;
+    ubidots.unSubscribeLastValue(DEVICE_LABEL, "stepsToday");
+    if (oldDay = 1)
+      pedometer.addDayStep(oldStep);
+  }
+  else
+  {
     Serial.println("topic not defined");
   }
-  
-  
-
-  
 }
