@@ -18,16 +18,15 @@ void UbiSendReceive::UbiSendReceive_CALLBACK(char *topic, byte *payload, unsigne
   }
 }
 
-void UbiSendReceive::UbiSendReceive_INIT(const char *VARIABLE_DATA, const char *VARIABLE_NEWDAY){
+void UbiSendReceive::UbiSendReceive_INIT(const char *VARIABLE_DATA, const char *VARIABLE_NEWDAY) {
   ubidots.subscribeLastValue(DEVICE_LABEL, VARIABLE_DATA);
   ubidots.subscribeLastValue(DEVICE_LABEL, VARIABLE_NEWDAY);
 }
 
 void UbiSendReceive::UbiSendReceive() {
-  if (newDay == true){
+  if (newDay == true) {
     if (millis() > 1000 && notPubYet == false) {
-      Serial.println("pub");
-      bidots.add(VARIABLE_LABEL, /*Skritt*/5);
+      bidots.add(VARIABLE_LABEL, /*Skritt*/5); //TODO: Legge inn kode for skritt
       ubidots.publish(DEVICE_LABEL);
       notPubYet = true;
 
@@ -37,7 +36,6 @@ void UbiSendReceive::UbiSendReceive() {
     if(millis() > startTime + 9000) {
       newDay = false;
       notPubYet = false;
-      Serial.println("starter på nytt");
 
       // LEGG INN ALVAR OG TORSTEIN FUNKSJON
 
