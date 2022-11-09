@@ -24,7 +24,7 @@
 
 ICM_20948_I2C myICM; // Otherwise create an ICM_20948_I2C object
 Ubidots ubidots(UBIDOTS_TOKEN);
-stepManager pedometer;
+stepManager pedometer( ubidots,DEVICE_LABEL,"steps" , "stepsToday" );
 
 float pythagorasAcc(ICM_20948_I2C *sensor);
 void numberOfSteps(int &stepCounter);
@@ -91,17 +91,14 @@ void loop()
   step=dummy::getStep();
 
 #endif
-  if (step == 1){
+  if (step == 1){         //register step. variable can only be active for one cycle
     pedometer.registerStep();
   }
+  // send total steps and cycle steps to Ubidots at timeinterval and on change in data.
   if ((pedometer.getCurrentCycleSteps() != 0) && ((millis() - timer) > PUBLISH_FREQUENCY)){
-    ubidots.add(VARIABLE_LABEL, pedometer.getCurrentCycleSteps());
-    ubidots.add("start", pedometer.getCurrentDaySteps());
-    ubidots.publish(DEVICE_LABEL);
-    timer = millis();
-    pedometer.resetStepCycle();
+    pedometer.ubiPublisStep();
   }
-}
+} 
 
 float pythagorasAcc(ICM_20948_I2C *sensor)
 {
@@ -116,12 +113,15 @@ void numberOfSteps(int &stepCounter)
 
 void callback(char *topic, byte *payload, unsigned int length)
 {
+   int payloadInt;
+  char paloadChar[20];
   Serial.print("Message arrived [");
   Serial.print(topic);
   Serial.print("] ");
   for (int i = 0; i < length; i++)
   {
-    Serial.print((char)payload[i]);
+    paloadChar[i]=((char)payload[i]);
   }
-  Serial.println();
+  Serial.println(atoi(paloadChar));
+  
 }

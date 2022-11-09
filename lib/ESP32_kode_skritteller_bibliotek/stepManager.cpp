@@ -9,7 +9,6 @@
 
 
 void stepManager::init () {
-
   const char* ntpServer = "pool.ntp.org";
   const long  gmtOffset_sec = 0;
   const int   daylightOffset_sec = 3600;
@@ -43,4 +42,15 @@ int stepManager::getDateInYear() {
 void stepManager::resetStepCycle() {
   _currentCycleSteps = 0;
 }
+
+void stepManager::ubiPublisStep(){
+  _Ubidots.add(_cycleLabel, stepManager::getCurrentCycleSteps());
+  _Ubidots.add(_dayLabel, stepManager::getCurrentDaySteps());
+  _Ubidots.publish(_deviceLabel);
+  _timer = millis();
+  stepManager::resetStepCycle();
+}
+
+const char* _cycleLabel;
+    const char* _dayLabel ;
 #endif
