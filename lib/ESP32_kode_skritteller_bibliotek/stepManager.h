@@ -15,6 +15,7 @@ class stepManager {
     unsigned int getCurrentCycleSteps();    // get the current amount og step.
     unsigned long   getCurrentDaySteps();   //get total steps today
     void resetStepCycle();                  //reset counter in current cycle. use after sending to Ubidots 
+    void resetDayCycle();
     void ubiPublisStep();                   //send steps data and reset current cycle.
     int getDateInYear();                    //get the day in the curren year. 0 indexed.
     void addDayStep(int steps);

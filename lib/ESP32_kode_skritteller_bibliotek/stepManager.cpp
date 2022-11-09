@@ -16,9 +16,6 @@ void stepManager::init () {
 }
 void stepManager::registerStep() {
 
-  if (stepManager::getDateInYear() != _prevDayCycle) {
-    _currentDaySteps = 0;
-  }
   _currentDaySteps += 1;
   _currentCycleSteps += 1;
   _prevDayCycle=stepManager::getDateInYear();
@@ -41,6 +38,9 @@ int stepManager::getDateInYear() {
 }
 void stepManager::resetStepCycle() {
   _currentCycleSteps = 0;
+}
+void stepManager::resetDayCycle() {
+  _currentDaySteps = 0;
 }
 
 void stepManager::ubiPublisStep(){
