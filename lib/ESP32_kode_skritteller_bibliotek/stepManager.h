@@ -8,15 +8,15 @@
 
 class stepManager {
   public:
-    stepManager (Ubidots & Ubidots,const char * deviceLabel, const char * cycleLabel,const char * dayLabel) : 
-    _Ubidots(Ubidots), _cycleLabel(cycleLabel),_dayLabel(dayLabel), _deviceLabel(deviceLabel) {}
+    stepManager (Ubidots & Ubidots,const char * deviceLabel, const char * cycleLabel,const char * dayLabel, const char * daySent) : 
+    _Ubidots(Ubidots), _cycleLabel(cycleLabel),_dayLabel(dayLabel), _deviceLabel(deviceLabel), _daySent(daySent) {}
     void init ();                          //initialize
     void registerStep();                    //register one step
     unsigned int getCurrentCycleSteps();    // get the current amount og step.
     unsigned long   getCurrentDaySteps();   //get total steps today
     void resetStepCycle();                  //reset counter in current cycle. use after sending to Ubidots 
     void ubiPublisStep();                   //send steps data and reset current cycle.
-  private:
+  protected:
     int getDateInYear();                    //get the day in the curren year. 0 indexed.
     int _timer=0;
     unsigned int _currentCycleSteps;        // number of steps in the current cycle
@@ -26,6 +26,8 @@ class stepManager {
     const char* _cycleLabel;
     const char* _dayLabel ;
     const char* _deviceLabel;
+    const char* _daySent;
+    
 
 };
 

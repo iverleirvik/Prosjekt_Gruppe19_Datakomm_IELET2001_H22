@@ -46,8 +46,8 @@ void stepManager::resetStepCycle() {
 void stepManager::ubiPublisStep(){
   _Ubidots.add(_cycleLabel, stepManager::getCurrentCycleSteps());
   _Ubidots.add(_dayLabel, stepManager::getCurrentDaySteps());
+  _Ubidots.add(_daySent, stepManager::getDateInYear());
   _Ubidots.publish(_deviceLabel);
-  _timer = millis();
   stepManager::resetStepCycle();
 }
 

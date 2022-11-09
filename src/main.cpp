@@ -24,7 +24,7 @@
 
 ICM_20948_I2C myICM; // Otherwise create an ICM_20948_I2C object
 Ubidots ubidots(UBIDOTS_TOKEN);
-stepManager pedometer( ubidots,DEVICE_LABEL,"steps" , "stepsToday" );
+stepManager pedometer( ubidots,DEVICE_LABEL,"steps" , "stepsToday", "daySent" );
 
 float pythagorasAcc(ICM_20948_I2C *sensor);
 void numberOfSteps(int &stepCounter);
@@ -97,6 +97,7 @@ void loop()
   // send total steps and cycle steps to Ubidots at timeinterval and on change in data.
   if ((pedometer.getCurrentCycleSteps() != 0) && ((millis() - timer) > PUBLISH_FREQUENCY)){
     pedometer.ubiPublisStep();
+    timer = millis();
   }
 } 
 
@@ -123,5 +124,20 @@ void callback(char *topic, byte *payload, unsigned int length)
     paloadChar[i]=((char)payload[i]);
   }
   Serial.println(atoi(paloadChar));
+
+  if (strstr("step", topic)){
+
+  }else if (strstr("daySent", topic))
+  {
+    /* code */
+  }else if (strstr("stepsToday", topic))
+  {
+    /* code */
+  }else{
+    Serial.println("topic not defined");
+  }
+  
+  
+
   
 }
