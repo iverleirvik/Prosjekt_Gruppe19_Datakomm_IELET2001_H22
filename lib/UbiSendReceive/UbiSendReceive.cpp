@@ -6,11 +6,11 @@ void UbiSendReceive::UbiSendReceive_CALLBACK(char *topic, byte *payload, unsigne
     charWord[i] = (char)payload[i];
   }
 
-  if(strstr(topic, "/v2.0/devices/esp32/1/lv")){ // OBS: Pass på og endre topic-streng til ubidotsbrukeren!
+  if(strstr(topic, "/v2.0/devices/esp32/1/lv")) { // OBS: Pass på og endre topic-streng til ubidotsbrukeren!
     skrittFelles.push_back(atoi(charWord));   // Legger verdi til i vectoren
   }
 
-  if(strstr(topic, "/v2.0/devices/esp32/2/lv")){
+  if(strstr(topic, "/v2.0/devices/esp32/2/lv")) {
     newDay = true;
   }
 }
