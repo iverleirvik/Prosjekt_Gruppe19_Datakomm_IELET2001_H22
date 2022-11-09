@@ -7,15 +7,17 @@
 #include <vector>
 using namespace std;
 
-bool newDay{false};
-bool notPubYet{false};
-unsigned long startTime{0};
-vector<int> skrittFelles;
+class UbiSendReceive {
+    protected:
+        bool newDay{false};
+        bool notPubYet{false};
+        unsigned long startTime{0};
+        vector<int> skrittFelles;
 
-namespace UbiSendReceive {
-    void UbiSendReceive_CALLBACK(char *topic, byte *payload, unsigned int length);
-    void UbiSendReceive_INIT(const char *VARIABLE_DATA, const char *VARIABLE_NEWDAY);
-    void UbiSendReceive();
-}
+    public:
+        void UbiSendReceive_CALLBACK(char *topic, byte *payload, unsigned int length);
+        void UbiSendReceive_INIT(const char *VARIABLE_DATA, const char *VARIABLE_NEWDAY);
+        void UbiSendReceive();
+};
 
 #endif UbiSendReceive_h
