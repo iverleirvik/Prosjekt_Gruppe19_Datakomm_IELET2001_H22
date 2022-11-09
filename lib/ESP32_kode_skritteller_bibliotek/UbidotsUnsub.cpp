@@ -2,8 +2,8 @@
 #define UbidostsUnsub_cpp
 #include "UbidotsUnsub.h"
 #include "UbidotsEsp32Mqtt.h"
-namespace UbidotsUnsub {
-bool UbidotsUnsub::unSubscribe(const char* topic) { return _clientMqttUbi.subscribe(topic); }
+
+bool UbidotsUnsub::unSubscribe(const char* topic) { return _clientMqttUbi.unsubscribe(topic); }
 
 /**
  * Retrieves data from Ubidots by subscribing to an lv topic
@@ -16,9 +16,9 @@ bool UbidotsUnsub::unSubscribeLastValue(const char* deviceLabel, const char* var
   sprintf(topic, "/v2.0/devices/%s/%s/lv", deviceLabel, variableLabel);
   Serial.print("Subscribing to");
   Serial.println(topic);
-  return UbidotsUnsub::unsubscribe(topic);
+  return UbidotsUnsub::unSubscribe(topic);
 }
-}
+
 
 
 #endif
