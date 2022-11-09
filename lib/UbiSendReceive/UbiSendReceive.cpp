@@ -2,12 +2,9 @@
 
 void UbiSendReceive::UbiSendReceive_CALLBACK(char *topic, byte *payload, unsigned int length) {
   char charWord[20];
-  for (int i = 0; i < length; i++)
-  {
+  for (int i = 0; i < length; i++)  {
     charWord[i] = (char)payload[i];
   }
-
-  Serial.println();
 
   if(strstr(topic, "/v2.0/devices/esp32/1/lv")){ // OBS: Pass på og endre topic-streng til ubidotsbrukeren!
     skrittFelles.push_back(atoi(charWord));   // Legger verdi til i vectoren
