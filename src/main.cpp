@@ -129,26 +129,7 @@ void callback(char *topic, byte *payload, unsigned int length)
   }
   payloadInt = atoi(paloadChar);
   Serial.println(payloadInt);
-
-  if (strstr("daySent", topic))
-  {
-    if (payloadInt == pedometer.getDateInYear())
-    {
-      if (oldStep != -1)
-        pedometer.addDayStep(oldStep);
-      oldDay = 1;
-    }
-    ubidots.unSubscribeLastValue(DEVICE_LABEL, "daySent");
-  }
-  else if (strstr("stepsToday", topic))
-  {
-    oldStep = payloadInt;
-    ubidots.unSubscribeLastValue(DEVICE_LABEL, "stepsToday");
-    if (oldDay = 1)
-      pedometer.addDayStep(oldStep);
-  }
-  else
-  {
-    Serial.println("topic not defined");
-  }
+  
+// check if message is sutable for stepManager
+pedometer.handelUbidotsCalback(topic,payloadInt);
 }
