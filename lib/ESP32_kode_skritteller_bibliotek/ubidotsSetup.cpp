@@ -2,12 +2,12 @@
 #define ubidotsSetup_cpp
 
 
-#include "UbidotsEsp32Mqtt.h"
+#include "UbidotsUnsub.h"
 #include "ubidotsSetup.h"
 #include <Arduino.h>
 namespace ubidotsSetup {
 
-void init(Ubidots & ubidots, void(*callback) (char*, byte*, unsigned int), const char *ssid, const char *pass)
+void init(UbidotsUnsub & ubidots, void(*callback) (char*, byte*, unsigned int), const char *ssid, const char *pass)
 {
   // put your setup code here, to run once:
   Serial.begin(115200);
@@ -19,7 +19,7 @@ void init(Ubidots & ubidots, void(*callback) (char*, byte*, unsigned int), const
   ubidots.reconnect();
 
 }
-int checkConnection( Ubidots &ubidots, char *deviceLabel, const char *subVariableLabel [], int subVariableLength) {
+int checkConnection( UbidotsUnsub &ubidots, char *deviceLabel, const char *subVariableLabel [], int subVariableLength) {
   ubidots.loop();
   if (!ubidots.connected())
   {
@@ -31,7 +31,7 @@ int checkConnection( Ubidots &ubidots, char *deviceLabel, const char *subVariabl
   return 0;
 }
 
-void sub ( Ubidots &ubidots, char *deviceLabel, const char *subVariableLabel [], int subVariableLength) {
+void sub ( UbidotsUnsub &ubidots, char *deviceLabel, const char *subVariableLabel [], int subVariableLength) {
 for (int i = 0; (i < subVariableLength) ; i++ ){
   ubidots.subscribeLastValue(deviceLabel, subVariableLabel[i]); 
 
