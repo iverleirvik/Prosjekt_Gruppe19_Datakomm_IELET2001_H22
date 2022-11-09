@@ -50,7 +50,7 @@ void stepManager::ubiPublisStep(){
   _Ubidots.publish(_deviceLabel);
   stepManager::resetStepCycle();
 }
-
-const char* _cycleLabel;
-    const char* _dayLabel ;
+void stepManager::addDayStep(int steps){
+  _currentDaySteps += steps;
+}
 #endif
