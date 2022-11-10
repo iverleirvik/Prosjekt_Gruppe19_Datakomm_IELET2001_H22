@@ -27,6 +27,7 @@
 ICM_20948_I2C myICM; // Otherwise create an ICM_20948_I2C object
 UbidotsUnsub ubidots(UBIDOTS_TOKEN);
 stepManager pedometer(ubidots, DEVICE_LABEL, "steps", "stepsToday", "daySent");
+UbiSendReceive talley;
 
 float pythagorasAcc(ICM_20948_I2C *sensor);
 void numberOfSteps(int &stepCounter);
@@ -44,7 +45,7 @@ void setup()
   ubidotsSetup::init(ubidots, callback, WIFI_SSID, WIFI_PASS);
   ubidotsSetup::sub(ubidots, DEVICE_LABEL, SUB_VARIABLE_LABEL, SUB_VARIABLE_LABEL_LENGTH);
 
-  UbiSendReceive::UbiSendReceive_INIT(  VARIABLE_LABEL, "2"/*Navnet på variabelen som Ubidots skal sende fra*/);
+  talley.UbiSendReceive_INIT(  VARIABLE_LABEL, "2"/*Navnet på variabelen som Ubidots skal sende fra*/,ubidots);
 
 #ifndef NOSENSOR
   WIRE_PORT.begin();
@@ -77,7 +78,7 @@ void loop()
   int step = 0;
   ubidotsSetup::checkConnection(ubidots, DEVICE_LABEL, SUB_VARIABLE_LABEL, SUB_VARIABLE_LABEL_LENGTH);
 
-  UbiSendReceive::UbiSendReceive();
+  talley.UbiSendReceive_loop(ubidots);
 
 #ifndef NOSENSOR
   if (myICM.dataReady())
@@ -137,7 +138,7 @@ void callback(char *topic, byte *payload, unsigned int length)
   payloadInt = atoi(paloadChar);
   Serial.println(payloadInt);
 
-  UbiSendReceive::UbiSendReceive_CALLBACK(topic, payload, length);
+  talley.UbiSendReceive_CALLBACK(topic, payload, length);
   
 // check if message is sutable for stepManager
 pedometer.handelUbidotsCalback(topic,payloadInt);

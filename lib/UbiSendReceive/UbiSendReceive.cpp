@@ -1,4 +1,6 @@
 #include "UbiSendReceive.h"
+#include "UbidotsUnsub.h"
+#include "UbidotsConfig.h"
 
 void UbiSendReceive::UbiSendReceive_CALLBACK(char *topic, byte *payload, unsigned int length) {
   char charWord[20];
@@ -15,15 +17,19 @@ void UbiSendReceive::UbiSendReceive_CALLBACK(char *topic, byte *payload, unsigne
   }
 }
 
-void UbiSendReceive::UbiSendReceive_INIT(const char *VARIABLE_DATA, const char *VARIABLE_NEWDAY) {
+void UbiSendReceive::UbiSendReceive_INIT(const char *VARIABLE_DATA, const char *VARIABLE_NEWDAY, Ubidots & ubidots) {
+  ubidots.subscribeLastValue(DEVICE_LABEL, VARIABLE_DATA);
+  ubidots.subscribeLastValue(DEVICE_LABEL, VARIABLE_NEWDAY);
+}
+void UbiSendReceive::UbiSendReceive_INIT(const char *VARIABLE_DATA, const char *VARIABLE_NEWDAY, Ubidots & ubidots) {
   ubidots.subscribeLastValue(DEVICE_LABEL, VARIABLE_DATA);
   ubidots.subscribeLastValue(DEVICE_LABEL, VARIABLE_NEWDAY);
 }
 
-void UbiSendReceive::UbiSendReceive() {
+void UbiSendReceive::UbiSendReceive_loop(Ubidots & ubidots) {
   if (newDay == true) {
     if (millis() > 1000 && notPubYet == false) {
-      bidots.add(VARIABLE_LABEL, /*Skritt*/5); //TODO: Legge inn kode for skritt
+      ubidots.add(VARIABLE_LABEL, /*Skritt*/5); //TODO: Legge inn kode for skritt
       ubidots.publish(DEVICE_LABEL);
       notPubYet = true;
 
