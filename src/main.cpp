@@ -14,6 +14,7 @@
 #include "UbidotsConfig.h"
 #include "ubidotsSetup.h"
 #include "stepManager.h"
+#include "UbiSendReceive"
 
 #ifdef NOSENSOR
 #include "dummyGetSensorData.h"
@@ -42,6 +43,9 @@ void setup()
 
   ubidotsSetup::init(ubidots, callback, WIFI_SSID, WIFI_PASS);
   ubidotsSetup::sub(ubidots, DEVICE_LABEL, SUB_VARIABLE_LABEL, SUB_VARIABLE_LABEL_LENGTH);
+
+  UbiSendReceive::UbiSendReceive_INIT(  VARIABLE_LABEL, "2"/*Navnet på variabelen som Ubidots skal sende fra*/);
+
 #ifndef NOSENSOR
   WIRE_PORT.begin();
   WIRE_PORT.setClock(400000);
@@ -72,6 +76,9 @@ void loop()
 {
   int step = 0;
   ubidotsSetup::checkConnection(ubidots, DEVICE_LABEL, SUB_VARIABLE_LABEL, SUB_VARIABLE_LABEL_LENGTH);
+
+  UbiSendReceive::UbiSendReceive();
+
 #ifndef NOSENSOR
   if (myICM.dataReady())
   {
@@ -129,6 +136,8 @@ void callback(char *topic, byte *payload, unsigned int length)
   }
   payloadInt = atoi(paloadChar);
   Serial.println(payloadInt);
+
+  UbiSendReceive::UbiSendReceive_CALLBACK(topic, payload, length);
   
 // check if message is sutable for stepManager
 pedometer.handelUbidotsCalback(topic,payloadInt);
