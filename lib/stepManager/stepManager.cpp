@@ -54,8 +54,10 @@ void stepManager::addDayStep(int steps){
   _currentDaySteps += steps;
 }
 void stepManager::handelUbidotsCalback(char * topic, int payloadInt){
-if ((strstr(_daySent, topic)) && (_notUpdated))
+   
+if ((strstr(topic,_daySent)!=NULL) && (_notUpdated))
   {
+    Serial.println("vads ");
     if (payloadInt == stepManager::getDateInYear())
     {
       if (_oldStep != -1)
@@ -63,13 +65,19 @@ if ((strstr(_daySent, topic)) && (_notUpdated))
       _oldDay = 1;
       _notUpdated=0;
     }
+    _Ubidots.unSubscribeLastValue(_deviceLabel, _daySent);
+   
   }
-  else if (strstr(_dayLabel, topic))
+else if (strstr(topic,_dayLabel)!=NULL)
   {
+   
     _oldStep = payloadInt;
+    _Ubidots.unSubscribeLastValue(_deviceLabel, _dayLabel);
+        
  
     if (_oldDay = 1)
       stepManager::addDayStep(_oldStep);
+      Serial.println("rm ");
       _notUpdated=0;
   }
   }

@@ -8,12 +8,14 @@
 
 #include "ICM_20948.h"
 #include "ubidotsSetup.h"
-#include "UbidotsEsp32Mqtt.h"
+//#include "UbidotsEsp32Mqtt.h"
 #include "secrets.h"
 #include "UbidotsConfig.h"
 #include "ubidotsSetup.h"
 #include "stepManager.h"
 #include "UbiSendReceive.h"
+
+#include "UbidotsUnsub.h"
 
 #ifdef NOSENSOR
 #include "dummyGetSensorData.h"
@@ -24,8 +26,8 @@
 #define AD0_VAL 1      // The value of the last bit of the I2C address. On the SparkFun 9DoF IMU breakout the default is 1, and when the ADR jumper is closed the value becomes 0.
 
 ICM_20948_I2C myICM; // Otherwise create an ICM_20948_I2C object
-Ubidots ubidots(UBIDOTS_TOKEN);
-stepManager pedometer(ubidots, DEVICE_LABEL, "steps", "stepsToday", "daySent");
+UbidotsUnsub ubidots(UBIDOTS_TOKEN);
+stepManager pedometer(ubidots, DEVICE_LABEL, "steps", "stepstoday", "daysent");
 UbiSendReceive talley(DEVICE_LABEL,VARIABLE_LABEL,ubidots);
 
 float pythagorasAcc(ICM_20948_I2C *sensor);

@@ -1,7 +1,7 @@
 #ifndef UbidostsUnsub_cpp
 #define UbidostsUnsub_cpp
 #include "UbidotsEsp32Mqtt.h"
-#include "UbidotsEsp32Mqtt.h"
+#include "UbidotsUnsub.h"
 
 bool UbidotsUnsub::unSubscribe(const char* topic) { return _clientMqttUbi.unsubscribe(topic); }
 

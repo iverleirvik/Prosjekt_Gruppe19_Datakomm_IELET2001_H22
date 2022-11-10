@@ -4,11 +4,11 @@
 
 #include <WiFi.h>
 #include "time.h"
-#include "UbidotsEsp32Mqtt.h"
+#include "UbidotsUnsub.h"
 
 class stepManager {
   public:
-    stepManager (Ubidots& Ubidots,const char * deviceLabel, const char * cycleLabel,const char * dayLabel, const char * daySent) : 
+    stepManager (UbidotsUnsub & Ubidots,const char * deviceLabel, const char * cycleLabel,const char * dayLabel, const char * daySent) : 
     _Ubidots(Ubidots), _cycleLabel(cycleLabel),_dayLabel(dayLabel), _deviceLabel(deviceLabel), _daySent(daySent) {}
     void init ();                          //initialize
     void registerStep();                    //register one step
@@ -30,7 +30,7 @@ class stepManager {
     int _oldStep;
     int _oldDay;
     //int _prevDayCycle;
-    Ubidots& _Ubidots;
+    UbidotsUnsub & _Ubidots;
     const char* _cycleLabel;                //where to send cycle
     const char* _dayLabel ;                 //where to send the current day
     const char* _deviceLabel;               //name of device
