@@ -10,7 +10,6 @@ char *DEVICE_LABEL = DEVICE_TYPE  STR(DEVICE_NUMBER) ;
 
 
 const int PUBLISH_FREQUENCY = 5000; // Update rate in milliseconds
-//char *DEVICE_LABEL = "pedometer1";    Put here your Device label to which data  will be published
 char *VARIABLE_LABEL = "steps"; // Put here your Variable label to which data  will be published
 
 const char * SUB_VARIABLE_LABEL [] = {"stepsToday", "daySent"};

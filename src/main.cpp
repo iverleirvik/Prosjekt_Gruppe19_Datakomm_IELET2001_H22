@@ -9,14 +9,13 @@
 #include "ICM_20948.h"
 #include "ubidotsSetup.h"
 #include "UbidotsEsp32Mqtt.h"
-#include "UbidotsUnsub.h"
 #include "secrets.h"
 #include "UbidotsConfig.h"
 #include "ubidotsSetup.h"
 #include "stepManager.h"
 #include "UbiSendReceive.h"
 
-//#ifdef NOSENSOR
+#ifdef NOSENSOR
 #include "dummyGetSensorData.h"
 #endif
 
@@ -25,9 +24,9 @@
 #define AD0_VAL 1      // The value of the last bit of the I2C address. On the SparkFun 9DoF IMU breakout the default is 1, and when the ADR jumper is closed the value becomes 0.
 
 ICM_20948_I2C myICM; // Otherwise create an ICM_20948_I2C object
-UbidotsUnsub ubidots(UBIDOTS_TOKEN);
+Ubidots ubidots(UBIDOTS_TOKEN);
 stepManager pedometer(ubidots, DEVICE_LABEL, "steps", "stepsToday", "daySent");
-UbiSendReceive talley;
+UbiSendReceive talley(DEVICE_LABEL,VARIABLE_LABEL,ubidots);
 
 float pythagorasAcc(ICM_20948_I2C *sensor);
 void numberOfSteps(int &stepCounter);
@@ -45,7 +44,7 @@ void setup()
   ubidotsSetup::init(ubidots, callback, WIFI_SSID, WIFI_PASS);
   ubidotsSetup::sub(ubidots, DEVICE_LABEL, SUB_VARIABLE_LABEL, SUB_VARIABLE_LABEL_LENGTH);
 
-  talley.UbiSendReceive_INIT(  VARIABLE_LABEL, "2"/*Navnet på variabelen som Ubidots skal sende fra*/,ubidots);
+  talley.UbiSendReceive_INIT(  VARIABLE_LABEL, "2"/*Navnet på variabelen som Ubidots skal sende fra*/);
 
 #ifndef NOSENSOR
   WIRE_PORT.begin();
@@ -78,7 +77,7 @@ void loop()
   int step = 0;
   ubidotsSetup::checkConnection(ubidots, DEVICE_LABEL, SUB_VARIABLE_LABEL, SUB_VARIABLE_LABEL_LENGTH);
 
-  talley.UbiSendReceive_loop(ubidots);
+  talley.UbiSendReceive_loop();
 
 #ifndef NOSENSOR
   if (myICM.dataReady())

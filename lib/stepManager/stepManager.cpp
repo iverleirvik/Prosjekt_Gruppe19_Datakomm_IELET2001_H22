@@ -4,7 +4,7 @@
 
 #include <WiFi.h>
 #include "time.h"
-#include "UbidotsUnsub.h"
+#include "UbidotsEsp32Mqtt.h"
 #include "stepManager.h"
 
 
@@ -54,22 +54,23 @@ void stepManager::addDayStep(int steps){
   _currentDaySteps += steps;
 }
 void stepManager::handelUbidotsCalback(char * topic, int payloadInt){
-if (strstr(_daySent, topic))
+if ((strstr(_daySent, topic)) && (_notUpdated))
   {
     if (payloadInt == stepManager::getDateInYear())
     {
       if (_oldStep != -1)
         stepManager::addDayStep(_oldStep);
       _oldDay = 1;
+      _notUpdated=0;
     }
-    _Ubidots.unSubscribeLastValue(_deviceLabel, _daySent);
   }
   else if (strstr(_dayLabel, topic))
   {
     _oldStep = payloadInt;
-    _Ubidots.unSubscribeLastValue(_deviceLabel, _dayLabel);
+ 
     if (_oldDay = 1)
       stepManager::addDayStep(_oldStep);
+      _notUpdated=0;
   }
   }
 #endif

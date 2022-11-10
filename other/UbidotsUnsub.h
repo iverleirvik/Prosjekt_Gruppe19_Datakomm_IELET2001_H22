@@ -1,7 +1,7 @@
 #ifndef UbidostsUnsub_h
 #define UbidostsUnsub_h
 #include "UbidotsEsp32Mqtt.h"
-class UbidotsUnsub : public Ubidots {       
+class Ubidots: public Ubidots {       
     public: 
     bool unSubscribe(const char* topic);
     bool unSubscribeLastValue(const char* deviceLabel, const char* variableLabel); 
