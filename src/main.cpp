@@ -16,7 +16,7 @@
 #include "stepManager.h"
 #include "UbiSendReceive.h"
 
-#ifdef NOSENSOR
+//#ifdef NOSENSOR
 #include "dummyGetSensorData.h"
 #endif
 
