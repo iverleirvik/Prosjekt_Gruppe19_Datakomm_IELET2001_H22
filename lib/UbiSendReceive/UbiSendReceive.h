@@ -12,13 +12,15 @@ class UbiSendReceive {
         bool newDay{false};
         bool notPubYet{false};
         unsigned long startTime{0};
-        Ubidots  _ubidots;
+        Ubidots  &_ubidots;
         char* _variableLabel;
         char* _deviceLabel;
         
 
     public:
-        UbiSendReceive(char * deviceLabel, char* variableLabel, Ubidots ubidots): _deviceLabel(deviceLabel), _variableLabel(variableLabel), _ubidots(ubidots){};
+        UbiSendReceive(char * deviceLabel, char* variableLabel, Ubidots & ubidots): 
+        _deviceLabel(deviceLabel), _variableLabel(variableLabel), _ubidots(ubidots){};
+        
         void UbiSendReceive_CALLBACK(char *topic, byte *payload, unsigned int length);
         void UbiSendReceive_INIT(const char *VARIABLE_DATA, const char *VARIABLE_NEWDAY);
         void UbiSendReceive_loop();
