@@ -20,7 +20,7 @@ void init(Ubidots & ubidots, void(*callback) (char*, byte*, unsigned int), const
   Serial.println(20);
   ubidots.setup();
   Serial.println(22);
-  ubidots.connect();
+  ubidots.reconnect();
   Serial.println(24);
 
 }
