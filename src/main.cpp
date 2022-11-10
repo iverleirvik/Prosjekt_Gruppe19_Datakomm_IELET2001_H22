@@ -14,7 +14,7 @@
 #include "UbidotsConfig.h"
 #include "ubidotsSetup.h"
 #include "stepManager.h"
-#include "UbiSendReceive"
+#include "UbiSendReceive.h"
 
 #ifdef NOSENSOR
 #include "dummyGetSensorData.h"
