@@ -24,7 +24,7 @@ void UbiSendReceive::UbiSendReceive_INIT(const char *VARIABLE_DATA, const char *
 
 
 
-void UbiSendReceive::UbiSendReceive_loop() {
+void UbiSendReceive::UbiSendReceive_loop(Adafruit_SSD1306 & display) {
   if (newDay == true) {
     if (millis() > 1000 && notPubYet == false) {
       _ubidots.add(_variableLabel, /*Skritt*/5); //TODO: Legge inn kode for skritt
@@ -39,6 +39,27 @@ void UbiSendReceive::UbiSendReceive_loop() {
       notPubYet = false;
 
       // LEGG INN ALVAR OG TORSTEIN FUNKSJON
+
+  
+    sort(skrittFelles.begin(), skrittFelles.end(), greater<int>());
+  
+    vinner = skrittFelles[0];
+
+    for(i = 0; size(skrittFelles); i++){
+        if(skrittFelles[i] >= ownResults){
+            Placement += 1
+        }
+    }
+    return 0;
+
+
+if(Placement == 1){
+    victoryCelebration(display); //
+}
+else {
+    loserNotification(Placement, display)
+}
+
 
       skrittFelles.clear();
     }
