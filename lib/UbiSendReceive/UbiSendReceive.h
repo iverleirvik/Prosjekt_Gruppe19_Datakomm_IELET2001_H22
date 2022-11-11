@@ -15,6 +15,9 @@ class UbiSendReceive {
         Ubidots  &_ubidots;
         char* _variableLabel;
         char* _deviceLabel;
+        int vinner;
+        int ownResults; 
+        int Placement = 1;
         
 
     public:
