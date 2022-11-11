@@ -1,7 +1,7 @@
 #include "UbiSendReceive.h"
 //#include "UbidotsEsp32Mqtt.h"
 
-void UbiSendReceive::UbiSendReceive_CALLBACK(char *topic, byte *payload, unsigned int length) {
+void UbiSendReceive::UbiSendReceive_CALLBACK(char *topic, byte *payload, unsigned int length, int steps) {
   char charWord[20];
   for (int i = 0; i < length; i++)  {
     charWord[i] = (char)payload[i];
@@ -13,6 +13,7 @@ void UbiSendReceive::UbiSendReceive_CALLBACK(char *topic, byte *payload, unsigne
 
   if(strstr(topic, "/v2.0/devices/esp32/2/lv")) {
     newDay = true;
+    lockedSteps = steps;
   }
 }
 
@@ -27,7 +28,7 @@ void UbiSendReceive::UbiSendReceive_INIT(const char *VARIABLE_DATA, const char *
 void UbiSendReceive::UbiSendReceive_loop() {
   if (newDay == true) {
     if (millis() > 1000 && notPubYet == false) {
-      _ubidots.add(_variableLabel, /*Skritt*/5); //TODO: Legge inn kode for skritt
+      _ubidots.add(_variableLabel, lockedSteps); //TODO: Legge inn kode for skritt
       _ubidots.publish(_deviceLabel);
       notPubYet = true;
 

@@ -24,7 +24,7 @@ class UbiSendReceive {
         UbiSendReceive(char * deviceLabel, char* variableLabel, Ubidots &ubidots): 
         _deviceLabel(deviceLabel), _variableLabel(variableLabel), _ubidots(ubidots){};
         
-        void UbiSendReceive_CALLBACK(char *topic, byte *payload, unsigned int length);
+        void UbiSendReceive_CALLBACK(char *topic, byte *payload, unsigned int length, int steps);
         void UbiSendReceive_INIT(const char *VARIABLE_DATA, const char *VARIABLE_NEWDAY);
         void UbiSendReceive_loop();
         vector<int> skrittFelles; // Lagt den her midlertidig. Plasseringen vil komme ann på kode til
