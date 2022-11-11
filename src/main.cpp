@@ -12,22 +12,14 @@
 #include "secrets.h"
 #include "UbidotsConfig.h"
 #include "ubidotsSetup.h"
-#include "stepManager.h"
 #include "UbiSendReceive.h"
-
-#include "UbidotsUnsub.h"
-
-#ifdef NOSENSOR
-#include "dummyGetSensorData.h"
-#endif
 
 #define SERIAL_PORT Serial
 #define WIRE_PORT Wire // Your desired Wire port.      Used when "USE_SPI" is not defined
 #define AD0_VAL 1      // The value of the last bit of the I2C address. On the SparkFun 9DoF IMU breakout the default is 1, and when the ADR jumper is closed the value becomes 0.
 
 ICM_20948_I2C myICM; // Otherwise create an ICM_20948_I2C object
-UbidotsUnsub ubidots(UBIDOTS_TOKEN);
-stepManager pedometer(ubidots, DEVICE_LABEL, "steps", "stepstoday", "daysent");
+
 UbiSendReceive talley(DEVICE_LABEL,VARIABLE_LABEL,ubidots);
 
 float pythagorasAcc(ICM_20948_I2C *sensor);
@@ -48,7 +40,7 @@ void setup()
 
   talley.UbiSendReceive_INIT(  VARIABLE_LABEL, "2"/*Navnet på variabelen som Ubidots skal sende fra*/);
 
-#ifndef NOSENSOR
+
   WIRE_PORT.begin();
   WIRE_PORT.setClock(400000);
 
@@ -71,7 +63,6 @@ void setup()
       initialized = true;
     }
   }
-#endif
 }
 
 void loop()
@@ -81,7 +72,6 @@ void loop()
 
   talley.UbiSendReceive_loop();
 
-#ifndef NOSENSOR
   if (myICM.dataReady())
   {
     myICM.getAGMT(); // The values are only updated when you call 'getAGMT'
@@ -97,21 +87,7 @@ void loop()
     SERIAL_PORT.println("Waiting for data");
     delay(500);
   }
-#else
 
-  step = dummy::getStep();
-
-#endif
-  if (step == 1)
-  { // register step. variable can only be active for one cycle
-    pedometer.registerStep();
-  }
-  // send total steps and cycle steps to Ubidots at timeinterval and on change in data.
-  if ((pedometer.getCurrentCycleSteps() != 0) && ((millis() - timer) > PUBLISH_FREQUENCY))
-  {
-    pedometer.ubiPublisStep();
-    timer = millis();
-  }
 }
 
 float pythagorasAcc(ICM_20948_I2C *sensor)
@@ -141,6 +117,4 @@ void callback(char *topic, byte *payload, unsigned int length)
 
   talley.UbiSendReceive_CALLBACK(topic, payload, length);
   
-// check if message is sutable for stepManager
-pedometer.handelUbidotsCalback(topic,payloadInt);
 }
