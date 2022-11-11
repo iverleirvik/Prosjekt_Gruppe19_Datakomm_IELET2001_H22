@@ -46,7 +46,7 @@ void UbiSendReceive::UbiSendReceive_loop(Adafruit_SSD1306 & display) {
     vinner = skrittFelles[0];
 
     for(i = 0; size(skrittFelles); i++){
-        if(skrittFelles[i] >= ownResults){
+        if(skrittFelles[i] > ownResults){
             Placement += 1
         }
     }
