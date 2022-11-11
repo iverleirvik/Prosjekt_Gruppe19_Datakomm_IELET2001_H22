@@ -33,7 +33,7 @@ void setup()
   ubidotsSetup::init(ubidots, callback, WIFI_SSID, WIFI_PASS);
   //ubidotsSetup::sub(ubidots, DEVICE_LABEL_2, SUB_VARIABLE_LABEL, SUB_VARIABLE_LABEL_LENGTH);
 
-  talley.UbiSendReceive_INIT(  VARIABLE_LABEL_2, VARIABLE_LABEL_3/*Navnet på variabelen som Ubidots skal sende fra*/);
+  talley.UbiSendReceive_INIT(  VARIABLE_LABEL_2, VARIABLE_LABEL_3); /*Navnet på variabelen som Ubidots skal sende fra*/
 
   WIRE_PORT.begin();
   WIRE_PORT.setClock(400000);
