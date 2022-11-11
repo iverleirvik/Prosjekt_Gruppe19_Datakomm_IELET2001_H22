@@ -1,0 +1,28 @@
+using namespace std;
+
+int vinner;
+  
+ownResults; 
+int Placement = 0;
+
+
+    vector<int> vResultat{ 1, 5, 8, 9, 6, 7, 3, 4, 2, 0 };
+  
+    sort(vResults.begin(), vResults.end(), greater<int>());
+  
+    vinner = vResults[0];
+
+    for(i = 0; size(vResultat); i++){
+        if(vResults[i] >= ownResults){
+            Placement += 1
+        }
+    }
+    return 0;
+
+
+if(Placement == 1){
+    victoryCelebration(display.);
+}
+else {
+    loserNotification(Placement, )
+}
