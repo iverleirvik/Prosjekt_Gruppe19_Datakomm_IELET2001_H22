@@ -11,7 +11,6 @@
 //#include "UbidotsEsp32Mqtt.h"
 #include "secrets.h"
 #include "UbidotsConfig.h"
-#include "ubidotsSetup.h"
 #include "UbiSendReceive.h"
 
 #define SERIAL_PORT Serial
@@ -59,14 +58,13 @@ void setup()
   }
 }
 
-void loop()
-{
+void loop() {
+  
   ubidotsSetup::checkConnection(ubidots, DEVICE_LABEL, SUB_VARIABLE_LABEL, SUB_VARIABLE_LABEL_LENGTH);
 
   talley.UbiSendReceive_loop();
 
-  if (myICM.dataReady())
-  {
+  if (myICM.dataReady())  {
     myICM.getAGMT(); // The values are only updated when you call 'getAGMT'
     delay(30);
     delay(170);
@@ -75,34 +73,29 @@ void loop()
     numberOfSteps(stepC);
     Serial.println(stepC);
   }
-  else
-  {
+  else  {
     SERIAL_PORT.println("Waiting for data");
     delay(500);
   }
 
 }
 
-float pythagorasAcc(ICM_20948_I2C *sensor)
-{
+float pythagorasAcc(ICM_20948_I2C *sensor)  {
   return sqrt(pow(sensor->accX(), 2) + pow(sensor->accY(), 2) + pow(sensor->accZ(), 2));
 }
 
-void numberOfSteps(int &stepCounter)
-{
+void numberOfSteps(int &stepCounter)  {
   if (pythagorasAcc(&myICM) > 1200)
     stepCounter++;
 }
 
-void callback(char *topic, byte *payload, unsigned int length)
-{
+void callback(char *topic, byte *payload, unsigned int length)  {
   int payloadInt;
   char paloadChar[20];
   Serial.print("Message arrived [");
   Serial.print(topic);
   Serial.print("] ");
-  for (int i = 0; i < length; i++)
-  {
+  for (int i = 0; i < length; i++)  {
     paloadChar[i] = ((char)payload[i]);
   }
   payloadInt = atoi(paloadChar);
