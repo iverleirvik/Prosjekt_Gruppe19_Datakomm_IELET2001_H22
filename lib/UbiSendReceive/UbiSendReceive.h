@@ -21,12 +21,12 @@ class UbiSendReceive {
         
 
     public:
-        UbiSendReceive(char * deviceLabel, char* variableLabel, Ubidots & ubidots): 
+        UbiSendReceive(char * deviceLabel, char* variableLabel, Ubidots &ubidots): 
         _deviceLabel(deviceLabel), _variableLabel(variableLabel), _ubidots(ubidots){};
         
         void UbiSendReceive_CALLBACK(char *topic, byte *payload, unsigned int length);
         void UbiSendReceive_INIT(const char *VARIABLE_DATA, const char *VARIABLE_NEWDAY);
-        void UbiSendReceive_loop(Adafruit_SSD1306 & display);
+        void UbiSendReceive_loop();
         vector<int> skrittFelles; // Lagt den her midlertidig. Plasseringen vil komme ann på kode til
                                   // til Torstein og Alvar. Ellers kommer vi til å trenge GET og SET-ish.
 
