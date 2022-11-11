@@ -16,7 +16,7 @@ class UbiSendReceive {
         char* _variableLabel;
         char* _deviceLabel;
         int vinner;
-        int ownResults; 
+        int lockedSteps; 
         int Placement = 1;
         
 
