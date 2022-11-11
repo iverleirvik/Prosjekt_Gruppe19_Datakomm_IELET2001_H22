@@ -1,5 +1,5 @@
 #include "UbiSendReceive.h"
-#include "UbidotsEsp32Mqtt.h"
+//#include "UbidotsEsp32Mqtt.h"
 
 void UbiSendReceive::UbiSendReceive_CALLBACK(char *topic, byte *payload, unsigned int length) {
   char charWord[20];
@@ -38,30 +38,32 @@ void UbiSendReceive::UbiSendReceive_loop(Adafruit_SSD1306 & display) {
       newDay = false;
       notPubYet = false;
 
-      // LEGG INN ALVAR OG TORSTEIN FUNKSJON
+// -----------------------------------------------------------------------------
 
-  
-    sort(skrittFelles.begin(), skrittFelles.end(), greater<int>());
-  
-    vinner = skrittFelles[0];
+        // LEGG INN ALVAR OG TORSTEIN FUNKSJON
 
-    for(i = 0; size(skrittFelles); i++){
-        if(skrittFelles[i] > ownResults){
-            Placement += 1
-        }
-    }
-    return 0;
+          {
+            sort(skrittFelles.begin(), skrittFelles.end(), greater<int>());
+      
+            vinner = skrittFelles[0];
 
+            for(i = 0; size(skrittFelles); i++) {
+              if(skrittFelles[i] > ownResults)  {
+                Placement += 1
+              }
+            }
+          //return 0;
 
-if(Placement == 1){
-    victoryCelebration(display); //
-}
-else {
-    loserNotification(Placement, display)
-}
+            if(Placement == 1){
+              victoryCelebration(display); //
+            }
+            else {
+              loserNotification(Placement, display)
+            }
+          }
 
-
+// -----------------------------------------------------------------------------
       skrittFelles.clear();
+      }
     }
-  }
 }

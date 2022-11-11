@@ -8,6 +8,13 @@
 #endif
 char *DEVICE_LABEL = DEVICE_TYPE  STR(DEVICE_NUMBER) ;
 
+//------------------------------------------------------
+
+#define DEVICE_LABEL_2 "ESP32"
+#define VARIABLE_LABEL_2 "1"
+#define VARIABLE_LABEL_3 "2"
+
+//------------------------------------------------------
 
 const int PUBLISH_FREQUENCY = 5000; // Update rate in milliseconds
 char *VARIABLE_LABEL = "steps"; // Put here your Variable label to which data  will be published

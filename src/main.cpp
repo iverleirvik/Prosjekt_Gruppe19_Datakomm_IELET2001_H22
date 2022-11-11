@@ -19,17 +19,12 @@
 #define AD0_VAL 1      // The value of the last bit of the I2C address. On the SparkFun 9DoF IMU breakout the default is 1, and when the ADR jumper is closed the value becomes 0.
 
 ICM_20948_I2C myICM; // Otherwise create an ICM_20948_I2C object
-
 UbiSendReceive talley(DEVICE_LABEL,VARIABLE_LABEL,ubidots);
 
 float pythagorasAcc(ICM_20948_I2C *sensor);
 void numberOfSteps(int &stepCounter);
 int stepC{0};
 void callback(char *topic, byte *payload, unsigned int length);
-
-unsigned long timer = 0;
-int oldStep = -1;
-int oldDay = 0;
 
 void setup()
 {
@@ -38,8 +33,7 @@ void setup()
   ubidotsSetup::init(ubidots, callback, WIFI_SSID, WIFI_PASS);
   ubidotsSetup::sub(ubidots, DEVICE_LABEL, SUB_VARIABLE_LABEL, SUB_VARIABLE_LABEL_LENGTH);
 
-  talley.UbiSendReceive_INIT(  VARIABLE_LABEL, "2"/*Navnet på variabelen som Ubidots skal sende fra*/);
-
+  talley.UbiSendReceive_INIT(  VARIABLE_LABEL_2, VARIABLE_LABEL_3/*Navnet på variabelen som Ubidots skal sende fra*/);
 
   WIRE_PORT.begin();
   WIRE_PORT.setClock(400000);
@@ -67,7 +61,6 @@ void setup()
 
 void loop()
 {
-  int step = 0;
   ubidotsSetup::checkConnection(ubidots, DEVICE_LABEL, SUB_VARIABLE_LABEL, SUB_VARIABLE_LABEL_LENGTH);
 
   talley.UbiSendReceive_loop();
