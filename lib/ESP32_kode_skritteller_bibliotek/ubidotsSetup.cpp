@@ -2,9 +2,9 @@
 #define ubidotsSetup_cpp
 
 
-#include "UbidotsEsp32Mqtt.h"
+//#include "UbidotsEsp32Mqtt.h"
 #include "ubidotsSetup.h"
-#include <Arduino.h>
+//#include <Arduino.h>
 namespace ubidotsSetup {
 
 void init(Ubidots & ubidots, void(*callback) (char*, byte*, unsigned int), const char *ssid, const char *pass)
@@ -13,42 +13,40 @@ void init(Ubidots & ubidots, void(*callback) (char*, byte*, unsigned int), const
   Serial.begin(115200);
   while (!Serial);
   // ubidots.setDebug(true);  // uncomment this to make debug messages available
-  Serial.println(16);
+  //Serial.println(16);
   ubidots.connectToWifi(ssid, pass);
-  Serial.println(18);
+  //Serial.println(18);
   ubidots.setCallback(callback);
-  Serial.println(20);
+  //Serial.println(20);
   ubidots.setup();
-  Serial.println(22);
+  //Serial.println(22);
   ubidots.reconnect();
-  Serial.println(24);
+  //Serial.println(24);
+  //ubidots.add("3", 100001); // MÅ GJØRES ORDENTLIG. ER EN SLAGS STARTER.
+  //ubidots.publish(DEVICE_LABEL_2);
 
 }
-int checkConnection( Ubidots &ubidots, char *deviceLabel, const char *subVariableLabel [], int subVariableLength) {
+int checkConnection( Ubidots &ubidots, char *deviceLabel, const char *subVariableLabel [], int subVariableLength, int timerStarter) {
   ubidots.loop();
   if (!ubidots.connected())
   {
     ubidots.reconnect();
     
-    sub( ubidots,  deviceLabel,  subVariableLabel, subVariableLength);
+    sub( ubidots,  deviceLabel,  subVariableLabel, subVariableLength, timerStarter);
     return 1;
   }
   return 0;
 }
 
-void sub ( Ubidots &ubidots, char *deviceLabel, const char *subVariableLabel [], int subVariableLength) {
-for (int i = 0; (i < subVariableLength) ; i++ ){
-  ubidots.subscribeLastValue(deviceLabel, subVariableLabel[i]); 
+void sub ( Ubidots &ubidots, char *deviceLabel, const char *subVariableLabel [], int subVariableLength, int timerStarter) {
+  for (int i = 0; (i < subVariableLength) ; i++ ) {
+    ubidots.subscribeLastValue(deviceLabel, subVariableLabel[i]);
+  }
+
+  ubidots.add(subVariableLabel[2], timerStarter); // MÅ GJØRES ORDENTLIG. ER EN SLAGS STARTER.
+  ubidots.publish(deviceLabel);
 
 }
-
-
-}
-
-
-
-
-
 }
 
 

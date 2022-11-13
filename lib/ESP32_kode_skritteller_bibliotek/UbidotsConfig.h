@@ -18,8 +18,9 @@ char *DEVICE_LABEL = DEVICE_TYPE  STR(DEVICE_NUMBER) ;
 
 const int PUBLISH_FREQUENCY = 5000; // Update rate in milliseconds
 char *VARIABLE_LABEL = "steps"; // Put here your Variable label to which data  will be published
+int ubidotsStartTimer{100001}; // Verdi som ubidots trenger for å starte event. Må sendes til "3".
 
-const char * SUB_VARIABLE_LABEL [] = {"1", "2"};
+const char * SUB_VARIABLE_LABEL [] = {"1", "2", "3"};
 const int SUB_VARIABLE_LABEL_LENGTH=sizeof(SUB_VARIABLE_LABEL)/sizeof(SUB_VARIABLE_LABEL[0]);
 
 #endif
