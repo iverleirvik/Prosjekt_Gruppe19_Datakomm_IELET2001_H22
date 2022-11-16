@@ -2,12 +2,12 @@
 #define OLED_H
 
 #include <Wire.h>
-#include <Adafruit_GFX.h>
+#include <Adafruit_GFX.h>       // Biblioteker som trengs for å vise på skjerm.
 #include <Adafruit_SSD1306.h>
 
 class OLED {
     private:
-        const uint8_t Happyfacearray[1024] = {
+        const uint8_t Happyfacearray[1024] = {  // Smilefjes laget piksel for piksel. Er en variabel, ligger derfor i h-fila.
         0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
         0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
         0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
@@ -142,9 +142,9 @@ class OLED {
     };   
      
 public:
-    void setupDisplay(Adafruit_SSD1306 & display);
-    void victoryCelebration(Adafruit_SSD1306 & display);
-    void loserNotification(int Placement, Adafruit_SSD1306 & display);
+    void setupDisplay(Adafruit_SSD1306 & display);  // Starter displayet.
+    void victoryCelebration(Adafruit_SSD1306 & display);    // Kjører happyfacearray og sadfacearray nedenfor på skjermen med de andre nødvendighetene til displayobjektet.
+    void loserNotification(int Placement, Adafruit_SSD1306 & display); 
 };
 
 #endif 
