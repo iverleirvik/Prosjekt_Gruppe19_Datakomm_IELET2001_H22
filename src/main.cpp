@@ -67,16 +67,6 @@ void setup()
 // -------------------------------------------------------------------------------
   // SKJERM
   display.begin(SSD1306_SWITCHCAPVCC, SCREEN_ADDRESS); // Address 0x3C for 128x32
-  /*display.display();
-  display.setTextSize(1);
-  display.setTextColor(SSD1306_WHITE);
-  display.setCursor(0,0);
-  display.clearDisplay();
-  display.print("Done with setup");
-  display.display();
-  delay(4000);
-  display.clearDisplay();*/
-
 // -------------------------------------------------------------------------------
 
 // -------------------------------------------------------------------------------
@@ -107,7 +97,6 @@ void loop() {
   ubidotsSetup::checkConnection(ubidots, DEVICE_LABEL_2, SUB_VARIABLE_LABEL, SUB_VARIABLE_LABEL_LENGTH, ubidotsStartTimer);
   talley.UbiSendReceive_loop(display, stepC);
 
-  //display.display(); // Kanskje legge til tilstandsmaskin for display?
   if(millis() > screenTimer + screenUpdateRate) {
     stepScreen(display, stepC);
     screenTimer = millis();
@@ -158,14 +147,11 @@ void callback(char *topic, byte *payload, unsigned int length)  {
 void stepScreen(Adafruit_SSD1306 &display, int steps) {
 
   display.clearDisplay();
-  //display.display();
   display.setTextSize(3);
   display.setTextColor(SSD1306_WHITE);
   display.setCursor(0,0);
   display.clearDisplay();
   display.println(steps);
   display.display();
-  //delay(4000);
-  //display.clearDisplay();
 
 }

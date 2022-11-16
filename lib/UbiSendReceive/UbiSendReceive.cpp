@@ -62,6 +62,7 @@ void UbiSendReceive::UbiSendReceive_loop(Adafruit_SSD1306 &display, int &steps) 
             else {
               oled.loserNotification(Placement, display);
             }
+            Placement = 1;
           }
 // -----------------------------------------------------------------------------
       skrittFelles.clear();

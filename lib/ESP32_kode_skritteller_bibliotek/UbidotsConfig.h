@@ -24,3 +24,5 @@ const char * SUB_VARIABLE_LABEL [] = {"1", "2", "3"};
 const int SUB_VARIABLE_LABEL_LENGTH=sizeof(SUB_VARIABLE_LABEL)/sizeof(SUB_VARIABLE_LABEL[0]);
 
 #endif
+
+// HER MÅ VI RYDDE

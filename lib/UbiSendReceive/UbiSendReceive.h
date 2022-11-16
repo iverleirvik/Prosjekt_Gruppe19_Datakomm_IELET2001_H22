@@ -38,4 +38,4 @@ class UbiSendReceive {
 
 };
 
-#endif //UbiSendReceive_h
+#endif 

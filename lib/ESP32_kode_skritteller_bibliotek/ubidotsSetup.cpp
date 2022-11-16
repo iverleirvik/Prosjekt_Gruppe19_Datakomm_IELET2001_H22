@@ -13,18 +13,10 @@ void init(Ubidots & ubidots, void(*callback) (char*, byte*, unsigned int), const
   Serial.begin(115200);
   while (!Serial);
   // ubidots.setDebug(true);  // uncomment this to make debug messages available
-  //Serial.println(16);
   ubidots.connectToWifi(ssid, pass);
-  //Serial.println(18);
   ubidots.setCallback(callback);
-  //Serial.println(20);
   ubidots.setup();
-  //Serial.println(22);
   ubidots.reconnect();
-  //Serial.println(24);
-  //ubidots.add("3", 100001); // MÅ GJØRES ORDENTLIG. ER EN SLAGS STARTER.
-  //ubidots.publish(DEVICE_LABEL_2);
-
 }
 int checkConnection( Ubidots &ubidots, char *deviceLabel, const char *subVariableLabel [], int subVariableLength, int timerStarter) {
   ubidots.loop();
@@ -32,7 +24,7 @@ int checkConnection( Ubidots &ubidots, char *deviceLabel, const char *subVariabl
   {
     ubidots.reconnect();
     
-    sub( ubidots,  deviceLabel,  subVariableLabel, subVariableLength, timerStarter);
+    sub(ubidots,  deviceLabel,  subVariableLabel, subVariableLength, timerStarter);
     return 1;
   }
   return 0;
@@ -43,7 +35,7 @@ void sub ( Ubidots &ubidots, char *deviceLabel, const char *subVariableLabel [],
     ubidots.subscribeLastValue(deviceLabel, subVariableLabel[i]);
   }
 
-  ubidots.add(subVariableLabel[2], timerStarter); // MÅ GJØRES ORDENTLIG. ER EN SLAGS STARTER.
+  ubidots.add(subVariableLabel[2], timerStarter);
   ubidots.publish(deviceLabel);
 
 }
