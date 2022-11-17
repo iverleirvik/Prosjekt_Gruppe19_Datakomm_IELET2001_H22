@@ -1,12 +1,12 @@
 #ifndef UbidotsConfig_h
 #define UbidotsConfig_h
-#ifndef STR
-#define STR_INDIR(x) #x
-#define STR(x) STR_INDIR(x)
-#define DEVICE_TYPE "pedometer"
-#define DEVICE_NUMBER 1
-#endif
-char *DEVICE_LABEL = DEVICE_TYPE  STR(DEVICE_NUMBER) ;
+//#ifndef STR
+//#define STR_INDIR(x) #x
+//#define STR(x) STR_INDIR(x)
+//#define DEVICE_TYPE "pedometer"
+//#define DEVICE_NUMBER 1
+//#endif
+//char *DEVICE_LABEL = DEVICE_TYPE  STR(DEVICE_NUMBER) ;
 
 //------------------------------------------------------
 

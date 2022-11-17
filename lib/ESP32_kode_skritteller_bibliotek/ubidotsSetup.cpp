@@ -9,12 +9,10 @@ namespace ubidotsSetup {
 
 void init(Ubidots & ubidots, void(*callback) (char*, byte*, unsigned int), const char *ssid, const char *pass)  // Funksjon som setter opp koblingen til ubidots.
 {
-  // put your setup code here, to run once:
   Serial.begin(115200); // Starter Serial.
   while (!Serial);
-  // ubidots.setDebug(true);  // uncomment this to make debug messages available
   ubidots.connectToWifi(ssid, pass);  // Kobler til internett.
-  ubidots.setCallback(callback);  // Setter callbackfunksjonen som vi sev har laget.
+  ubidots.setCallback(callback);  // Setter callbackfunksjonen som vi selv har laget.
   ubidots.setup();                // Kjører oppsett av ubidots.
   ubidots.reconnect();            // Kobler seg til på nytt.
 }
@@ -23,7 +21,7 @@ int checkConnection( Ubidots &ubidots, char *deviceLabel, const char *subVariabl
   if (!ubidots.connected()) // Hvis den ikke er koblet opp lenger, start prosedyre for å gjenoppta koblingen.
   {
     ubidots.reconnect();
-    
+    //koble til topics igjen
     sub(ubidots,  deviceLabel,  subVariableLabel, subVariableLength, timerStarter);
     return 1;
   }
