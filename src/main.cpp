@@ -32,7 +32,7 @@
 Ubidots ubidots(UBIDOTS_TOKEN); // Initialiserer for ubidots objektet.
 ICM_20948_I2C myICM; // Definerer sensor objektet. 
 UbiSendReceive talley(DEVICE_LABEL_2, VARIABLE_LABEL_2, ubidots); // Initialiserer UbiSendReceive objektet. Objekt på grunn av klasseegenskaper.
-Adafruit_SSD1306 display = Adafruit_SSD1306(128, 64, &WIRE, OLED_RESET); Initialiserer skjerm objektet.
+Adafruit_SSD1306 display = Adafruit_SSD1306(128, 64, &WIRE, OLED_RESET); //Initialiserer skjerm objektet.
 // -----------------------------------------------------------------------------------------
 
 // -----------------------------------------------------------------------------------------

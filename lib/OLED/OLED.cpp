@@ -1,7 +1,7 @@
 #include "OLED.h" // Inkluderer til h-fila.
 
 
-void OLED::setupDisplay(Adafruit_SSD1306 & display){  Tar inn displayet ved pass-by-reference.
+void OLED::setupDisplay(Adafruit_SSD1306 & display){  //Tar inn displayet ved pass-by-reference.
     if(!display.begin(SSD1306_SWITCHCAPVCC, 0x3C)) { // Sjekker om displayet fungerer som det skal.
     Serial.println(F("SSD1306 allocation failed"));
     for(;;); // Vil prøve å ta så mange loops som mulig. samme som while(true);
