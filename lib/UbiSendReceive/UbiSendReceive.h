@@ -7,6 +7,7 @@
 #include "Adafruit_SSD1306.h"       //
                                     //
 #include <vector>                   //
+#include <random>
 
 using namespace std;
 
@@ -24,7 +25,11 @@ class UbiSendReceive {
         int lockedSteps; 
         int firstMessagesIgnore{0}; // Brukes hvis det er meldinger registrert i ubidots databaser.
         int Placement{1};
-        int timerEspSendMessage{1000}; // Kan være lurt at er forskjellig mellom hver av enhetene.
+        {
+          std::default_random_engine generator;
+          std::uniform_int_distribution<int> distribution(100,2000);
+          int timerEspSendMessage = distribution(generator); // Kan være lurt at er forskjellig mellom hver av enhetene.
+        }
         int timerEspStopListening{9000};    // En tid der all data må være sendt fordi skrittelleren slutter å lytte etter meldinger.
         
     public:
