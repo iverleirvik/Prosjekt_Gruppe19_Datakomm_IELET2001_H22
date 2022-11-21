@@ -7,7 +7,7 @@
 #include "Adafruit_SSD1306.h"       //
                                     //
 #include <vector>                   //
-#include <random>
+
 
 using namespace std;
 
