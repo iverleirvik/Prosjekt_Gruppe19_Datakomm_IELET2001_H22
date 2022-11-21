@@ -25,11 +25,7 @@ class UbiSendReceive {
         int lockedSteps; 
         int firstMessagesIgnore{0}; // Brukes hvis det er meldinger registrert i ubidots databaser.
         int Placement{1};
-        {
-          std::default_random_engine generator;
-          std::uniform_int_distribution<int> distribution(100,2000);
-          int timerEspSendMessage = distribution(generator); // Kan være lurt at er forskjellig mellom hver av enhetene.
-        }
+    
         int timerEspStopListening{9000};    // En tid der all data må være sendt fordi skrittelleren slutter å lytte etter meldinger.
         
     public:
@@ -41,6 +37,7 @@ class UbiSendReceive {
         void UbiSendReceive_loop(Adafruit_SSD1306 &display, int &steps);    // Funksjonen som blir brukt i hver runde i loopen.
         vector<int> skrittFelles; // Lagt den her midlertidig. Plasseringen vil komme ann på kode til
                                   // til Torstein og Alvar. Ellers kommer vi til å trenge GET og SET-ish.
+        int timerEspSendMessage;
 
 };
 
