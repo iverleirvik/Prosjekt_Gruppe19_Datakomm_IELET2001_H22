@@ -13,6 +13,13 @@
 #include "UbidotsConfig.h" // Informasjon som ikke trengs å holdes hemmelig.
 #include "UbiSendReceive.h" // Bibliotek for samhandling og tilstandsmaskiner med ubidots.
 
+#include <chrono>
+#include <random>
+#include <stdio.h>
+#include <time.h>
+#include <cstdlib>
+#include <stdlib.h>
+
 // -----------------------------------------------------------------------------------------
 // SENSOR
 #define SERIAL_PORT Serial  // Defineringen av navnet som ICM bruker til serial.
@@ -57,6 +64,12 @@ int screenUpdateRate{1000}; // Hvor odte en skjermen skal oppdatere antall skrit
 
 void setup()  // Prosesser som må gjennomføres før skrittelleren er operativ.
 {
+  unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
+  std::default_random_engine generator(seed);
+  std::uniform_int_distribution<int> distribution(100, 2000);
+  int timerEspSendMessage = distribution(generator);
+  talley.timerEspSendMessage = timerEspSendMessage;
+   
   ubidotsSetup::init(ubidots, callback, WIFI_SSID, WIFI_PASS);  // Legger til hemmelig informasjon og callback-funksjonen som man selv må legge til ting til.
   ubidotsSetup::sub(ubidots, DEVICE_LABEL_2, SUB_VARIABLE_LABEL, SUB_VARIABLE_LABEL_LENGTH, ubidotsStartTimer); // Funksjon som har ansvar for å abonnere på variabler.
 
